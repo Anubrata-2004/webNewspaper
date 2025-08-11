@@ -1,37 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Simple Calculator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newspaper</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto:wght@500&display=swap");
+
+    :root {
+      --primary-text-color: black;
+      --secondary-text-color: #577592;
+      --accent-color: #0000fe;
+      --accent-color-dark: #39b5ff;
+      --bg-color: #f5ebc8;
+      --card-bg: #fff;
+      --nav-bg: #fefaf9;
+      --input-bg: #fff;
+      --input-border: #bbd0e2;
+      --shadow-color: #d4ecff;
+    }
+
+    body.dark-mode {
+      --primary-text-color: #74e90e;
+      --secondary-text-color: #a0a0a0;
+      --accent-color: #74e90e;
+      --accent-color-dark: #66b2ff;
+      --bg-color: #000034;
+      --card-bg: #1e1e1e;
+      --nav-bg: #1f1f1f;
+      --input-bg: #2c2c2c;
+      --input-border: black;
+      --shadow-color: #333;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--primary-text-color);
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    p {
+      font-family: "Roboto", sans-serif;
+      color: var(--secondary-text-color);
+      line-height: 1.4rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .flex {
+      display: flex;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin-inline: auto;
+      overflow: hidden;
+    }
+
+    nav {
+      background-color: var(--nav-bg);
+      box-shadow: 0 0 4px var(--shadow-color);
+      position: fixed;
+      top: 0;
+      z-index: 99;
+      left: 0;
+      right: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .main-nav {
+      justify-content: space-between;
+      padding-block: 8px;
+    }
+
+    .company-logo img {
+      width: 120px;
+    }
+
+    .nav-links ul {
+      gap: 16px;
+    }
+
+    .hover-link {
+      cursor: pointer;
+    }
+
+    .hover-link:hover {
+      color: var(--secondary-text-color);
+    }
+
+    .hover-link:active {
+      color: red;
+    }
+
+    .nav-item.active {
+      color: var(--accent-color);
+    }
+
+    .search-bar {
+      height: 32px;
+      gap: 8px;
+    }
+
+    .news-input {
+      width: 200px;
+      height: 100%;
+      padding-inline: 12px;
+      border-radius: 4px;
+      border: 2px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--primary-text-color);
+      font-family: "Roboto", sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .search-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button i {
+  font-size: 100px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px black;
+}
+
+
+
+.search-button:hover {
+  background-color: var(--accent-color-dark);
+}
+
+
+    main {
+      padding-block: 20px;
+      margin-top: 200px;
+    }
+
+    .cards-container {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      row-gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      width: 360px;
+      min-height: 400px;
+      box-shadow: 0 0 4px var(--shadow-color);
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: var(--card-bg);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      color: var(--primary-text-color);
+    }
+
+    .card:hover {
+      box-shadow: 1px 1px 8px var(--shadow-color);
+      background-color: #a8dffb;
+      transform: translateY(-2px);
+    }
+
+    .card-header img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 12px;
+    }
+
+    .news-source {
+      margin-block: 23px;
+    }
+
+    .dark-toggle {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: "Roboto", sans-serif;
+      transition: background-color 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .dark-toggle:hover {
+      background-color: var(--accent-color-dark);
+    }
+
+    .nav-heading {
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 0.5rem 0;
+      color: #333;
+      opacity: 0;
+      transform: translateY(-40px);
+      animation: popUp 0.6s ease-out forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes popUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dark-mode .nav-heading {
+      color: #f0f0f0;
+    }
+
+    .bar {
+      height: 3px;
+      width: 100%;
+      background-color: var(--primary-text-color);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: var(--nav-bg);
+        box-shadow: 0 0 4px var(--shadow-color);
+        padding: 10px;
+        border-radius: 4px;
+        flex-direction: column;
+        display: none;
+      }
+
+      .nav-links ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="calculator">
-    <div id="display" class="display">0</div>
-    <div class="buttons">
-      <button data-value="7">7</button>
-  <button data-value="8">8</button>
-  <button data-value="9">9</button>
-  <button data-value="/">÷</button>
+  <nav>
+    <h1 class="nav-heading">Welcome to <span style="color: #74e90e;">NewsEverday</span></h1>
+    <div class="main-nav container flex">
+      <a href="#" onclick="reload()" class="company-logo">
+        <img src="./images/logo.png" alt="company logo" />
+      </a>
 
-  <button data-value="4">4</button>
-  <button data-value="5">5</button>
-      <button data-value="6">6</button>
-      <button data-value="*">×</button>
+      <div class="search-bar flex">
+        <input id="search-text" type="text" class="news-input" placeholder="search here..." required />
+        <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
 
-  <button data-value="1">1</button>
-  <button data-value="2">2</button>
-     <button data-value="3">3</button>
-    <button data-value="-">-</button>
+        
+      </div>
 
-      <button data-value="0">0</button>
-      <button data-value=".">.</button>
-      <button id="equals">=</button>
-    <button data-value="+">+</button>
+     
 
-      <button id="clear">C</button>
+        
+
+      <div class="nav-links" id="nav-links">
+        <ul class="flex">
+          <li class="hover-link nav-item" onclick="onNavItemClick('Sports')">Sports</li>
+          <li class="hover-link nav-item" onclick="onNavItemClick('Films')">Films</li>
+          <li class="hover-link nav-item" onclick="onNavItemClick('Finance')">Finance</li>
+          <li class="hover-link nav-item" onclick="onNavItemClick('Politics')">Politics</li>
+          <li class="hover-link nav-item" onclick="onNavItemClick('Business')">Business</li>
+        </ul>
+      </div>
+
+      <button id="dark-mode-toggle" class="dark-toggle">Dark Mode</button>
     </div>
-  </div>
-  <script src="script.js"></script>
+  </nav>
+
+  <main>
+    <div class="cards-container container flex" id="cards-container"></div>
+  </main>
+
+  <template id="template-news-card">
+    <div class="card">
+      <div class="card-header">
+        <img src="https://placehold.co/600x400 "alt="news-image" id="news-img">
+            <div class="card-content">
+                <h3 id="news-title"></h3>
+                <h6 class="news-source" id="news-source"></h6>
+                <p class="news-desc" id="news-desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae saepe quis voluptatum quisquam vitae doloremque facilis molestias quae ratione cumque! Lorem ipsum dolor sit amet consectetur adipisicing elit. At error consectetur corporis neque. Maiores iusto corporis facere aut? Exercitationem debitis alias illum veniam temporibus, adipisci nesciunt animi nam mollitia in?</p>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
 </body>
 </html>

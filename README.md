@@ -1,1 +1,3 @@
 # webNewspaper
+This is my webNewspaper by HTML,CSS & JAVASCRIPT
+Hope you like it...

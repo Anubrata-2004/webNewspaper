@@ -41,7 +41,7 @@ function disableDarkMode() {
 
 // The main api function...
 
-const API_KEY ="4208f996d6124780b921ca316d1277db";
+const API_KEY ="";
 const url = "https://newsapi.org/v2/everything?q=";
 
 window.addEventListener("load", () => fetchNews("India"));
@@ -110,6 +110,7 @@ searchButton.addEventListener("click", () => {
     curSelectedNav?.classList.remove("active");
     curSelectedNav = null;
 });
+
 
 
 
